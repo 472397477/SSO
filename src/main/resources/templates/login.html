@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+    <script type="text/javascript" src="http://192.168.11.145:30000/static/jquery-3.4.1.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+           //1、获取从门户网站上传来的地址
+          var currentPage=$("#current_page").text();
+          //2、执行登录操作
+            $("#do_login").click(function () {
+               $.post("/doLogin",$("#forms").serialize(),function (data) {
+                   // 规定如果data不为null，说明登录成功，需要跳转到currentPage页面
+                   if(data != null) {
+                       location.href = currentPage;
+                   } else {
+                       // 登录失败，规定直接跳转到门户网站的index页面
+                       location.href = "http://127.0.0.1:8081";
+                   }
+               }) ;
+            });
+        });
+    </script>
+</head>
+<body>
+
+    <form id="forms">
+        Username:<input type="text" name="username"/> <br />
+        Password:<input type="password" name="password"/> <br />
+        <input id="do_login" type="button" value="Submit"/> <br />
+    </form>
+<!--    //获取从门户项目中跳转的路径-->
+<!--    //不需要展示，隐藏就会好-->
+    <span id="current_page" style="display: none;" th:text="${currentPage}"></span>
+</body>
+</html>
